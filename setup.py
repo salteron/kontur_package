@@ -12,7 +12,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     python_requires='>=3.6',
-    install_requires=[],
+    install_requires=['twine'],
     setup_requires=['pytest-runner'],
     tests_require=tests_dependencies,
     extras_require={
@@ -22,7 +22,7 @@ setup(
     packages=find_namespace_packages(include=['kontur.*']),
     namespace_packages=['kontur'],
     entry_points={
-        'console_scripts': ['publish=kontur.packagepublisher.api:publish'],
+        'console_scripts': ['publish=kontur.packagepublisher.api:publish']
     },
     maintainer='kontur custom',
     maintainer_email='custom@skbkontur.ru',
