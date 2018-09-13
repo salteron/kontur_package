@@ -4,7 +4,7 @@ from kontur.package import log
 
 
 def execute(command, raise_on_failure=True):
-    log(f'>> {command}')
+    log(f'$ {command}')
     completed_process = run(command, shell=True, check=raise_on_failure, capture_output=True)
 
     return Result(completed_process)

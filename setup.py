@@ -7,7 +7,7 @@ tests_dependencies = ['pytest', 'pytest-cov']
 
 setup(
     name='kontur_package',
-    version='1.0.0',
+    version='1.0.2',
     description='TODO: description',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -16,7 +16,7 @@ setup(
     setup_requires=['pytest-runner'],
     tests_require=tests_dependencies,
     extras_require={
-        'test': tests_dependencies,
+        'test': tests_dependencies
     },
     url='https://git.skbkontur.ru/custom_dev/kontur_package',
     packages=find_namespace_packages(include=['kontur.*']),
