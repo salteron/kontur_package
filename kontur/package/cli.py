@@ -22,15 +22,15 @@ def cli():
     """Package release tool"""
 
 
-pypi_url_option = click.option('--pypi-url', default=PYPI_URL, callback=validate_presence)
-pypi_user_name_option = click.option('--pypi-user-name', default=PYPI_USER_NAME, callback=validate_presence)
-pypi_user_password_option = click.option('--pypi-user-password', default=PYPI_USER_PASSWORD, callback=validate_presence)
+pypi_url_argument = click.argument('pypi-url', callback=validate_presence)
+pypi_user_name_option = click.option('--pypi-user-name', prompt=True, callback=validate_presence)
+pypi_user_password_option = click.option('--pypi-user-password', prompt=True, callback=validate_presence)
 repository_remote_option = click.option('--repository-remote',
                                         default=DEFAULT_REPOSITORY_REMOTE, callback=validate_presence)
 
 
 @cli.command()
-@pypi_url_option
+@pypi_url_argument
 @pypi_user_name_option
 @pypi_user_password_option
 @repository_remote_option
@@ -44,7 +44,7 @@ def release(pypi_url, pypi_user_name, pypi_user_password, repository_remote):
 
 
 @cli.command()
-@pypi_url_option
+@pypi_url_argument
 @pypi_user_name_option
 @pypi_user_password_option
 def released(pypi_url, pypi_user_name, pypi_user_password):
@@ -63,7 +63,7 @@ def build():
 
 
 @cli.command()
-@pypi_url_option
+@pypi_url_argument
 @pypi_user_name_option
 @pypi_user_password_option
 def upload(pypi_url, pypi_user_name, pypi_user_password):
@@ -84,7 +84,7 @@ def tag(repository_remote):
     actions.tag(repository=repository, version=Package.current().version)
 
 
-@cli.command()
+@cli.command(name='push-tags')
 @repository_remote_option
 def push_tags(repository_remote):
     """Pushes tags to remote repository"""

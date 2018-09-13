@@ -48,4 +48,5 @@ git fetch upstream
 git checkout CI_COMMIT_SHA
 
 # https://about.gitlab.com/2017/11/02/automating-boring-git-operations-gitlab-ci/
+https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables
 '''

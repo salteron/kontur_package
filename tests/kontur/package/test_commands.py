@@ -1,7 +1,9 @@
 from subprocess import CompletedProcess
 from unittest.mock import Mock, patch
 
-from kontur.package.commands import Result, execute
+import pytest
+
+from kontur.package.commands import Error, Result, execute
 
 
 def test_result_is_successful():
@@ -20,6 +22,12 @@ def test_result_stdout():
     assert Result(completed_process).stdout() == 'hello'
 
 
+def test_result_stderr():
+    completed_process = Mock(spec=CompletedProcess)
+    completed_process.stderr = b' hello '
+    assert Result(completed_process).stderr() == 'hello'
+
+
 @patch('kontur.package.commands.run')
 def test_execute(run):
     completed_process = Mock(spec=CompletedProcess)
@@ -28,7 +36,7 @@ def test_execute(run):
     run.return_value = completed_process
 
     execute('echo')
-    run.assert_called_with('echo', shell=True, check=True, capture_output=True)
+    run.assert_called_with('echo', shell=True, check=False, capture_output=True)
 
     execute('echo', raise_on_failure=False)
     run.assert_called_with('echo', shell=True, check=False, capture_output=True)
@@ -39,7 +47,28 @@ def test_execute(run):
 
 
 @patch('kontur.package.commands.run')
+def test_execute_when_command_fails(run):
+    completed_process = Mock(spec=CompletedProcess)
+    completed_process.stderr = b' oops '
+    completed_process.returncode = 1
+    run.return_value = completed_process
+
+    with pytest.raises(Error) as error_info:
+        execute('failing command', raise_on_failure=True)
+        assert str(error_info.error) == 'oops'
+
+    result = execute('failing command', raise_on_failure=False)
+    assert not result.is_successful()
+    assert result.stderr() == 'oops'
+
+
+@patch('kontur.package.commands.run')
 @patch('kontur.package.commands.log')
-def test_execute_logging(log, _run):
+def test_execute_logging(log, run):
+    completed_process = Mock(spec=CompletedProcess)
+    completed_process.stdout = b' hello '
+    completed_process.returncode = 0
+    run.return_value = completed_process
+
     execute('echo')
     log.assert_called_with('$ echo')

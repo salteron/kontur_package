@@ -5,9 +5,14 @@ from kontur.package import log
 
 def execute(command, raise_on_failure=True):
     log(f'$ {command}')
-    completed_process = run(command, shell=True, check=raise_on_failure, capture_output=True)
 
-    return Result(completed_process)
+    completed_process = run(command, shell=True, check=False, capture_output=True)
+    result = Result(completed_process)
+
+    if raise_on_failure and not result.is_successful():
+        raise Error(result.stderr())
+
+    return result
 
 
 class Result:
@@ -19,3 +24,10 @@ class Result:
 
     def stdout(self):
         return self._completed_process.stdout.strip().decode()
+
+    def stderr(self):
+        return self._completed_process.stderr.strip().decode()
+
+
+class Error(Exception):
+    pass

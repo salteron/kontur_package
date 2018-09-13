@@ -34,5 +34,5 @@ def test_build(execute, rmtree):
     package = Package(name='name', version='version')
     package.build()
 
-    rmtree.assert_called_with('dist')
+    rmtree.assert_called_with('dist', ignore_errors=True)
     execute.assert_called_with('python setup.py sdist --dist-dir dist bdist_wheel --dist-dir dist')
