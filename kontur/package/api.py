@@ -48,17 +48,20 @@ args:
     - repository url / remote
 '''
 
+pypi_url = 'http://localhost:8080'
+pypi_user_name = 'user'
+pypi_user_password = 'user'
+pypi = PYPI(url=pypi_url, user_name=pypi_user_name, user_password=pypi_user_password)
+
+repository_url = 'upstream'
+repository = Repository(url=repository_url)
+
+package = Package.current()
+
 
 def release():
-    package = Package.current()
-    pypi = PYPI(url='https://pypi.testkontur.ru', user_name='$PYPI_USERNAME', user_password='$PYPI_PASSWORD')
-    repository = Repository(url='upstream')
-
     actions.release(package=package, pypi=pypi, repository=repository)
 
 
 def released():
-    package = Package.current()
-    pypi = PYPI(url='https://pypi.testkontur.ru', user_name='$PYPI_USERNAME', user_password='$PYPI_PASSWORD')
-
     return actions.released(package=package, pypi=pypi)
