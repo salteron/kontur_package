@@ -25,7 +25,7 @@ class Package:
         return f'{self.name}=={self.version}'
 
     def build(self):
-        rmtree(self.build_dir)
+        rmtree(self.build_dir, ignore_errors=True)
         cmd = self.BUILD_CMD.format(directory=self.build_dir)
         return execute(cmd)
 
@@ -54,13 +54,15 @@ class PYPI:
 
 class Repository:
     ADD_TAG_CMD = 'git tag -a -m "Version {version}" {tag_name}'
-    PUSH_TAGS_CMD = 'git push --tags {url}'
+    PUSH_TAGS_CMD = 'git push --tags {remote}'
+    REMOTE_URL_CMD = 'git remote get-url {remote}'
 
-    def __init__(self, url):
-        self.url = url
+    def __init__(self, remote):
+        self.remote = remote
 
     def __str__(self):
-        return self.url
+        cmd = self.REMOTE_URL_CMD.format(remote=self.remote)
+        return execute(cmd).stdout()
 
     def tag(self, version):
         tag_name = f'v{version}'
@@ -68,5 +70,5 @@ class Repository:
         return execute(cmd)
 
     def push_tags(self):
-        cmd = self.PUSH_TAGS_CMD.format(url=self.url)
+        cmd = self.PUSH_TAGS_CMD.format(remote=self.remote)
         return execute(cmd)

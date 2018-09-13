@@ -63,7 +63,7 @@ pypi_user_password = 'user'
 pypi = PYPI(url=pypi_url, user_name=pypi_user_name, user_password=pypi_user_password)
 
 repository_url = 'upstream'
-repository = Repository(url=repository_url)
+repository = Repository(remote=repository_url)
 
 package = Package.current()
 
