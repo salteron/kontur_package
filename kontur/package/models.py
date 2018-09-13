@@ -1,9 +1,11 @@
+from shutil import rmtree
+
 from kontur.package.commands import execute
 
 
 class Package:
-    BUILD_CMD = 'python setup.py sdist --dist-dir {directory} bdist_wheel --dist-dir {directory}'
     BUILD_DIR = 'dist'
+    BUILD_CMD = 'python setup.py sdist --dist-dir {directory} bdist_wheel --dist-dir {directory}'
     CURRENT_NAME_CMD = 'python setup.py --name'
     CURRENT_VERSION_CMD = 'python setup.py --version'
 
@@ -23,8 +25,9 @@ class Package:
         return f'{self.name}=={self.version}'
 
     def build(self):
+        rmtree(self.build_dir)
         cmd = self.BUILD_CMD.format(directory=self.build_dir)
-        return execute(cmd, dry=True)
+        return execute(cmd)
 
 
 class PYPI:
@@ -46,7 +49,7 @@ class PYPI:
 
     def upload_from(self, directory):
         cmd = self.UPLOAD_CMD.format(pypi=self, directory=directory)
-        return execute(cmd, dry=True)
+        return execute(cmd)
 
 
 class Repository:
@@ -62,8 +65,8 @@ class Repository:
     def tag(self, version):
         tag_name = f'v{version}'
         cmd = self.ADD_TAG_CMD.format(version=version, tag_name=tag_name)
-        return execute(cmd, dry=True)
+        return execute(cmd)
 
     def push_tags(self):
         cmd = self.PUSH_TAGS_CMD.format(url=self.url)
-        return execute(cmd, dry=True)
+        return execute(cmd)

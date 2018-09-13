@@ -34,12 +34,21 @@ python setup.py --name
 
 # поскольку утилита не дает возможность менять версию, то и коммитить `bump version` не нужно
 
-# TODO: сделать одним классам много методов
 # TODO: сделать метод проверки аргументов
 # TODO: переименовать в gitlab в группе PYPI_USERNAME (и подобное) в KONTUR_PYPI_USERNAME, а в секции билда
 # присвоить переменной PIP_USERNAME=KONTUR_PYPI_USERNAME
 
-# TODO: команды вынести в константы
+# Использовать CI_COMMIT_SHA для передачи коммита, на который надо ставить tag
+# CI_REPOSITORY_URL
+
+apt-get install git
+# add user password
+git init .
+git remote add upstream CI_REPOSITORY_URL
+git fetch upstream
+git checkout CI_COMMIT_SHA
+
+# https://about.gitlab.com/2017/11/02/automating-boring-git-operations-gitlab-ci/
 
 # TODO: для организации cli попробовать click
 

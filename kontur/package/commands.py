@@ -3,17 +3,9 @@ from subprocess import run
 from kontur.package import log
 
 
-def execute(command, dry=False, raise_on_failure=True):
-    prefix = '(dry) ' if dry else ''
-    log(f'>> {prefix}{command}')
-
-    if dry:
-        command = f'echo {command}'
-
-    completed_process = run([command], shell=True, check=raise_on_failure, capture_output=True)
-
-    if raise_on_failure:
-        completed_process.check_returncode()
+def execute(command, raise_on_failure=True):
+    log(f'>> {command}')
+    completed_process = run(command, shell=True, check=raise_on_failure, capture_output=True)
 
     return Result(completed_process)
 
