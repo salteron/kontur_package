@@ -11,7 +11,7 @@ publish:
     - chmod 644 ~/.ssh/known_hosts
     - git config --global user.name "GIT ROBOT"
     - git clone git@git.skbkontur.ru:custom_dev/kontur_package.git
-    - ssh git.skbkontur.ru
+    - ls -alh
 
 
 
