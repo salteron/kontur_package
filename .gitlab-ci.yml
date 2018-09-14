@@ -2,5 +2,4 @@ publish:
   image: python:3.7-slim
   tags: [2gb, docker, kontur]
   script:
-    - apt-get update -qq && apt-get install -y -qq git
-    - git --version
+    - echo $GIT_ROBOT_SSH_PRIV_KEY
