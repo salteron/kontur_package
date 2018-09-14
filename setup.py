@@ -7,7 +7,7 @@ tests_dependencies = ['pytest', 'pytest-cov']
 
 setup(
     name='kontur_package',
-    version='1.0.3',
+    version='1.0.4',
     description='TODO: description',
     long_description=long_description,
     long_description_content_type='text/markdown',

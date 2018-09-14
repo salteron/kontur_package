@@ -1,3 +1,18 @@
+before_script:
+  - pip install virtualenv
+  - virtualenv .venv
+  - source .venv/bin/activate
+  - mkdir -p $PIP_CACHE_DIR
+  - pip install --requirement requirements.txt
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip_cache"
+
+cache:
+  paths:
+    - .pip_cache/
+    - .venv/
+
 publish:
   image: python:3.7-slim
   tags: [2gb, docker, kontur]
@@ -9,13 +24,11 @@ publish:
     - chmod 700 ~/.ssh
     - ssh-keyscan git.skbkontur.ru >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "custom@skbkontur.ru"
     - git config --global user.name "GIT ROBOT"
-    - git init .
-    - git remote -v
-    - git remote remove upstream
-    - git fetch origin
-    - git log HEAD
-    - git log $CI_COMMIT_SHA
+    - git remote add upstream git@git.skbkontur.ru:custom_dev/kontur_package.git
+    - kontur-package tag
+    - kontur-package push-tags --repository-remote upstream
 
 
 
