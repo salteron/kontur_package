@@ -1,18 +1,11 @@
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from kontur.package.models import Repository
 
 
-@patch('kontur.package.models.execute')
-def test_str(execute):
+def test_str():
     repository = Repository('remote')
-
-    result = Mock()
-    result.stdout.return_value = 'http://example.com'
-    execute.return_value = result
-
-    assert str(repository) == 'http://example.com'
-    execute.assert_called_with('git remote get-url remote')
+    assert str(repository) == 'remote'
 
 
 @patch('kontur.package.models.execute')

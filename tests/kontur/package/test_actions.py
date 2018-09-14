@@ -60,14 +60,6 @@ def test_tag(execute):
 def test_push_tags(execute):
     repository = Repository('remote')
 
-    def side_effect(command):
-        if command == 'git remote get-url remote':
-            result = Mock()
-            result.stdout.return_value = 'https://example.com'
-            return result
-
-    execute.side_effect = side_effect
-
     push_tags(repository)
 
     execute.assert_called_with('git push --tags remote')
@@ -84,10 +76,6 @@ def test_release(_rmtree, execute):
         if command == 'pip download --no-deps --dest /tmp --index-url url name==1.0.0':
             result = Mock()
             result.is_successful.return_value = False
-            return result
-        elif command == 'git remote get-url remote':
-            result = Mock()
-            result.stdout.return_value = 'https://example.com'
             return result
 
     execute.side_effect = side_effect

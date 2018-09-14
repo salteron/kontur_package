@@ -3,11 +3,6 @@ import click
 from kontur.package import actions
 from kontur.package.models import PYPI, Package, Repository
 
-# TODO: remote PYPI constants
-PYPI_URL = 'http://localhost:8080'
-PYPI_USER_NAME = 'user'
-PYPI_USER_PASSWORD = 'user'
-
 DEFAULT_REPOSITORY_REMOTE = 'upstream'
 
 
@@ -25,20 +20,20 @@ def cli():
 pypi_url_argument = click.argument('pypi-url', callback=validate_presence)
 pypi_user_name_option = click.option('--pypi-user-name', prompt=True, callback=validate_presence)
 pypi_user_password_option = click.option('--pypi-user-password', prompt=True, callback=validate_presence)
-repository_remote_option = click.option('--repository-remote',
-                                        default=DEFAULT_REPOSITORY_REMOTE, callback=validate_presence)
+repository_url_or_remote_option = click.option('--repository-url-or-url',
+                                               default=DEFAULT_REPOSITORY_REMOTE, callback=validate_presence)
 
 
 @cli.command()
 @pypi_url_argument
 @pypi_user_name_option
 @pypi_user_password_option
-@repository_remote_option
-def release(pypi_url, pypi_user_name, pypi_user_password, repository_remote):
+@repository_url_or_remote_option
+def release(pypi_url, pypi_user_name, pypi_user_password, repository_url_or_remote):
     """Releases current version of package unless already released"""
 
     pypi = PYPI(url=pypi_url, user_name=pypi_user_name, user_password=pypi_user_password)
-    repository = Repository(remote=repository_remote)
+    repository = Repository(url_or_remote=repository_url_or_remote)
 
     actions.release(package=Package.current(), pypi=pypi, repository=repository)
 
@@ -75,21 +70,21 @@ def upload(pypi_url, pypi_user_name, pypi_user_password):
 
 
 @cli.command()
-@repository_remote_option
-def tag(repository_remote):
+@repository_url_or_remote_option
+def tag(repository_url_or_remote):
     """Tags HEAD with current version number"""
 
-    repository = Repository(remote=repository_remote)
+    repository = Repository(url_or_remote=repository_url_or_remote)
 
     actions.tag(repository=repository, version=Package.current().version)
 
 
 @cli.command(name='push-tags')
-@repository_remote_option
-def push_tags(repository_remote):
+@repository_url_or_remote_option
+def push_tags(repository_url_or_remote):
     """Pushes tags to remote repository"""
 
-    repository = Repository(remote=repository_remote)
+    repository = Repository(url_or_remote=repository_url_or_remote)
 
     actions.push_tags(repository=repository)
 

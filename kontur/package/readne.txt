@@ -45,10 +45,11 @@ apt-get install git
 git init .
 git remote add upstream CI_REPOSITORY_URL
 git fetch upstream
-git checkout CI_COMMIT_SHA
+git log CI_COMMIT_SHA
 
 # https://about.gitlab.com/2017/11/02/automating-boring-git-operations-gitlab-ci/
 https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables
+https://docs.gitlab.com/ee/ci/ssh_keys/
 '''
 
 # install git

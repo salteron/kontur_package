@@ -54,15 +54,13 @@ class PYPI:
 
 class Repository:
     ADD_TAG_CMD = 'git tag -a -m "Version {version}" {tag_name}'
-    PUSH_TAGS_CMD = 'git push --tags {remote}'
-    REMOTE_URL_CMD = 'git remote get-url {remote}'
+    PUSH_TAGS_CMD = 'git push --tags {url_or_remote}'
 
-    def __init__(self, remote):
-        self.remote = remote
+    def __init__(self, url_or_remote):
+        self.url_or_remote = url_or_remote
 
     def __str__(self):
-        cmd = self.REMOTE_URL_CMD.format(remote=self.remote)
-        return execute(cmd).stdout()
+        return self.url_or_remote
 
     def tag(self, version):
         tag_name = f'v{version}'
@@ -70,5 +68,5 @@ class Repository:
         return execute(cmd)
 
     def push_tags(self):
-        cmd = self.PUSH_TAGS_CMD.format(remote=self.remote)
+        cmd = self.PUSH_TAGS_CMD.format(url_or_remote=self.url_or_remote)
         return execute(cmd)

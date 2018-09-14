@@ -26,9 +26,8 @@ publish:
     - chmod 644 ~/.ssh/known_hosts
     - git config --global user.email "custom@skbkontur.ru"
     - git config --global user.name "GIT ROBOT"
-    - echo git@git.skbkontur.ru:${CI_PROJECT_PATH}.git
     - kontur-package tag
-    - kontur-package push-tags --repository-remote git@git.skbkontur.ru:${CI_PROJECT_PATH}.git
+    - kontur-package push-tags --repository-url-or-remote git@git.skbkontur.ru:${CI_PROJECT_PATH}.git
 
 
 
