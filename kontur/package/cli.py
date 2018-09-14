@@ -20,7 +20,7 @@ def cli():
 pypi_url_argument = click.argument('pypi-url', callback=validate_presence)
 pypi_user_name_option = click.option('--pypi-user-name', prompt=True, callback=validate_presence)
 pypi_user_password_option = click.option('--pypi-user-password', prompt=True, callback=validate_presence)
-repository_url_or_remote_option = click.option('--repository-url-or-url',
+repository_url_or_remote_option = click.option('--repository-url-or-remote',
                                                default=DEFAULT_REPOSITORY_REMOTE, callback=validate_presence)
 
 
