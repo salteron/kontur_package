@@ -2,4 +2,16 @@ publish:
   image: python:3.7-slim
   tags: [2gb, docker, kontur]
   script:
-    - echo $GIT_ROBOT_SSH_PRIV_KEY
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo -n "$GIT_ROBOT_SSH_PRIVATE_KEY" | ssh-add - >/dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan git.skbkontur.ru >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.name "GIT ROBOT"
+    - git clone git@git.skbkontur.ru:custom_dev/kontur_package.git
+    - ssh git.skbkontur.ru
+
+
+
