@@ -10,8 +10,12 @@ publish:
     - ssh-keyscan git.skbkontur.ru >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - git config --global user.name "GIT ROBOT"
-    - git clone git@git.skbkontur.ru:custom_dev/kontur_package.git
-    - ls -alh
+    - git init .
+    - git remote -v
+    - git remote remove upstream
+    - git fetch origin
+    - git log HEAD
+    - git log $CI_COMMIT_SHA
 
 
 
