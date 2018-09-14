@@ -16,6 +16,8 @@ cache:
 publish:
   image: python:3.7-slim
   tags: [2gb, docker, kontur]
+  only:
+    - master
   script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
     - eval $(ssh-agent -s)
